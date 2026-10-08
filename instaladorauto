@@ -1,0 +1,82 @@
+#!/data/data/com.termux/files/usr/bin/bash
+# ============================================================
+#   NEXUS FPS - Instalador Automatico
+#   Shadow Tech Team v1.0.0
+# ============================================================
+
+ROSA="\033[1;38;5;213m"
+CIANO="\033[1;38;5;51m"
+VERDE="\033[1;38;5;46m"
+VERMELHO="\033[1;38;5;196m"
+AMARELO="\033[1;38;5;226m"
+N="\033[1m"
+R="\033[0m"
+
+SERVIDOR="https://raw.githubusercontent.com/SttTEAMtermuxLTD/INSTALADOR-NEXUS-FPS/main"
+
+clear
+echo -e "${ROSA}"
+cat << "EOF"
+  _   _ _______  ___   _ ____    _____ ____  ____  
+ | \ | | ____\ \/ / | | / ___|  |  ___|  _ \/ ___| 
+ |  \| |  _|  \  /| | | \___ \  | |_  | |_) \___ \ 
+ | |\  | |___ /  \| |_| |___) | |  _| |  __/ ___) |
+ |_| \_|_____/_/\_\\___/|____/  |_|   |_|   |____/ 
+EOF
+echo -e "${R}${CIANO}${N}     >> INSTALADOR NEXUS FPS <<${R}"
+echo -e "${CIANO}     ========================${R}"
+echo ""
+
+echo -e "${AMARELO}[1/6]${R} Verificando ambiente..."
+sleep 0.5
+if [ ! -d "/data/data/com.termux" ]; then
+    echo -e "${VERMELHO}[!] Este instalador so funciona no Termux!${R}"
+    exit 1
+fi
+echo -e "${VERDE}  [+] Termux detectado${R}"
+
+echo -e "${AMARELO}[2/6]${R} Instalando dependencias..."
+sleep 0.5
+if ! command -v swapon >/dev/null 2>&1; then
+    pkg install util-linux -y >/dev/null 2>&1
+fi
+echo -e "${VERDE}  [+] Dependencias instaladas${R}"
+
+echo -e "${AMARELO}[3/6]${R} Baixando painel..."
+sleep 0.5
+mkdir -p "$HOME/.nx_fps"
+if curl -sL "$SERVIDOR/nx_fps" -o "$HOME/.nx_fps/nx_fps"; then
+    chmod +x "$HOME/.nx_fps/nx_fps"
+    echo -e "${VERDE}  [+] Painel baixado${R}"
+else
+    echo -e "${VERMELHO}  [X] Falha ao baixar painel${R}"
+    exit 1
+fi
+
+echo -e "${AMARELO}[4/6]${R} Configurando..."
+sleep 0.5
+echo "1.0.0" > "$HOME/.nx_fps/versao"
+echo -e "${VERDE}  [+] Configurado${R}"
+
+echo -e "${AMARELO}[5/6]${R} Criando atalho..."
+sleep 0.5
+if ! grep -q "alias nxfps=" "$HOME/.bashrc" 2>/dev/null; then
+    echo "alias nxfps='~/.nx_fps/nx_fps'" >> "$HOME/.bashrc"
+fi
+echo -e "${VERDE}  [+] Atalho criado${R}"
+
+echo -e "${AMARELO}[6/6]${R} Finalizando..."
+sleep 0.5
+
+echo ""
+echo -e "${VERDE}${N}  ============================================${R}"
+echo -e "${VERDE}${N}     INSTALACAO CONCLUIDA COM SUCESSO!${R}"
+echo -e "${VERDE}${N}  ============================================${R}"
+echo ""
+echo -e "${CIANO}  Como usar:${R}"
+echo -e "${AMARELO}    1.${R} Feche e abra o Termux"
+echo -e "${AMARELO}    2.${R} Digite: ${VERDE}nxfps${R}"
+echo ""
+echo -e "${ROSA}  Shadow Tech Team${R}"
+echo -e "${CINZA}  Dev: Professor | Co-Dev: DeepEsc${R}"
+echo ""
